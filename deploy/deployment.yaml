@@ -39,5 +39,8 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: postgresql
-                key: database-user
+                key: database-
+                
+      - image: IMAGE_NAME_HERE
+        name: accounts
 status: {}
