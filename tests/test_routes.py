@@ -138,7 +138,7 @@ class TestAccountService(TestCase):
         """It should not read an account that isn't found"""
         resp = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
-        
+
     def test_update_an_account(self):
         """It should update an existing account"""
         account = self._create_accounts(1)[0]
@@ -152,7 +152,7 @@ class TestAccountService(TestCase):
         }
 
         resp = self.client.put(
-            f"{BASE_URL}/{account.id}", 
+            f"{BASE_URL}/{account.id}",
             json=updated_data,
             content_type="application/json"
         )
@@ -202,7 +202,7 @@ class TestAccountService(TestCase):
         # Verify: Check that the account is actually deleted
         deleted_account = Account.query.get(account_id)
         self.assertIsNone(deleted_account)
-        
+
     def test_list_accounts(self):
         """It should list all accounts"""
         # Arrange: Create some accounts using the factory method
