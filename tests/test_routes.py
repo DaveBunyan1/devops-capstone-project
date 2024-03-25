@@ -203,3 +203,36 @@ class TestAccountService(TestCase):
         deleted_account = Account.query.get(account_id)
         self.assertIsNone(deleted_account)
         
+    def test_list_accounts(self):
+        """It should list all accounts"""
+        # Arrange: Create some accounts using the factory method
+        num_accounts = 5
+        accounts = self._create_accounts(num_accounts)
+
+        # Act: Send a GET request to list all accounts
+        response = self.client.get(BASE_URL)
+
+        # Assert: Check that the response status code indicates success
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Verify: Check that the response contains all created accounts
+        data = response.get_json()
+        self.assertIsInstance(data, list)
+        self.assertEqual(len(data), num_accounts)
+
+        # Verify that each account in the response matches the created accounts
+        for i, account_data in enumerate(data):
+            self.assertEqual(account_data["id"], accounts[i].id)
+            self.assertEqual(account_data["name"], accounts[i].name)
+            self.assertEqual(account_data["email"], accounts[i].email)
+            self.assertEqual(account_data["address"], accounts[i].address)
+            self.assertEqual(account_data["phone_number"], accounts[i].phone_number)
+            self.assertEqual(account_data["date_joined"], str(accounts[i].date_joined))
+
+    def test_list_accounts_empty(self):
+        """It should return an empty list"""
+        response = self.client.get(BASE_URL)
+
+        data = response.get_json()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual([], data)
